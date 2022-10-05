@@ -1,5 +1,7 @@
 package com.rodrigo.br.gerenciador.modelo;
 
+
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,14 +12,19 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "reponsaveis")
+@Table(name = "responsaveis")
 @Getter
 @Setter
-public class Reponsavel {
+public class Responsavel {
+
+    public Responsavel() {
+
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     
     private String nome;
+
 }

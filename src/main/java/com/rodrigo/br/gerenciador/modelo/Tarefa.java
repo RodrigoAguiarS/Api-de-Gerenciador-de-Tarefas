@@ -20,14 +20,18 @@ import lombok.Setter;
 @Setter
 public class Tarefa {
 
+    public Tarefa() {
+
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     private String descricao;
 
     @ManyToOne
-    private Reponsavel responsavel;
+    private Responsavel responsavel;
 
     private LocalDateTime data = LocalDateTime.now();
 
