@@ -20,13 +20,13 @@ import lombok.Setter;
 @Setter
 public class Tarefa {
 
-    public Tarefa() {
-
-    }
+    public Tarefa() {}
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    private String titulo;
 
     private String descricao;
 

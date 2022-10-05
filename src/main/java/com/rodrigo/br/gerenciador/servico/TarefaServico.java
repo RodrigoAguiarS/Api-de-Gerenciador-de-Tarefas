@@ -18,18 +18,36 @@ public class TarefaServico {
     @Autowired
     private Resposta resposta;
 
-    //Método para listrar tarefas
+    //Método para listar tarefas
     public Iterable<Tarefa> listar() {
         return tarefaRepository.findAll();
     }
 
     //Método para cadastrar tarefas
-    public ResponseEntity<?> cadastrar(Tarefa tarefa){
+    public ResponseEntity<?> cadastrarAlterar(Tarefa tarefa, String acao){
+        //verifica se possui descrição
         if (tarefa.getDescricao().equals("")) {
             resposta.setMensagem("A descrição da tarefa é obrigatório");
             return new ResponseEntity<Resposta>(resposta, HttpStatus.BAD_REQUEST);
+
+        //verifica se possui titulo
+        }else if (tarefa.getTitulo().equals("")) {
+            resposta.setMensagem("A Título da tarefa é obrigatório");
+            return new ResponseEntity<Resposta>(resposta, HttpStatus.BAD_REQUEST);
+
         }else {
-            return new ResponseEntity<Tarefa>(tarefaRepository.save(tarefa), HttpStatus.CREATED);
-        }
-    }  
+            if (acao.equals("cadastrar")) {
+                return new ResponseEntity<Tarefa>(tarefaRepository.save(tarefa), HttpStatus.CREATED);
+            }else {
+                return new ResponseEntity<Tarefa>(tarefaRepository.save(tarefa), HttpStatus.OK);
+            }
+        } 
+    } 
+    
+    //Método para remover tarefas
+    public ResponseEntity<Resposta> remover(int id) {
+        tarefaRepository.deleteById(id);
+        resposta.setMensagem("A Tarefa foi removida com sucesso!");
+        return new ResponseEntity<Resposta>(resposta, HttpStatus.OK);
+    }
 }
