@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import com.rodrigo.br.gerenciador.dto.TarefaDto;
 import com.rodrigo.br.gerenciador.modelo.Resposta;
 import com.rodrigo.br.gerenciador.modelo.Tarefa;
 import com.rodrigo.br.gerenciador.repository.TarefaRepository;
@@ -23,14 +25,17 @@ public class TarefaServico {
     @Autowired
     private Resposta resposta;
 
+    //Método para listar tarefas por id
+    public ResponseEntity<TarefaDto> detalhar(@PathVariable Integer id) {
+        Optional<Tarefa> tarefa = tarefaRepository.findById(id);
+        if (tarefa.isPresent()){
+            return ResponseEntity.ok(new TarefaDto(tarefa.get()));
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
     //Método para listar tarefas
-    /*public Iterable<Tarefa> listar() {
+    public List<Tarefa> listar() {
         return tarefaRepository.findAll();
-    }*/
-
-    public List<Tarefa> findAll() {
-        return tarefaRepository.findAll();
-        
     }
 
     //Método para cadastrar tarefas
@@ -43,6 +48,11 @@ public class TarefaServico {
         //verifica se possui titulo
         }else if (tarefa.getTitulo().equals("")) {
             resposta.setMensagem("A Título da tarefa é obrigatório");
+            return new ResponseEntity<Resposta>(resposta, HttpStatus.BAD_REQUEST);
+        
+         //verifica se possui responsavel
+        }else if (tarefa.getResponsavel().getNome().equals("")) {
+            resposta.setMensagem("O Responsável da tarefa é obrigatório");
             return new ResponseEntity<Resposta>(resposta, HttpStatus.BAD_REQUEST);
 
         }else {

@@ -29,14 +29,14 @@ public class TarefaControle {
     private TarefaServico tarefaServico;
 
 
-    /*@GetMapping
-    public Iterable<Tarefa> listar() {
-        return tarefaServico.listar();
-    }*/
-    
+    @GetMapping("/{id}")
+    public ResponseEntity<TarefaDto> detalhar(@PathVariable int id) {
+        return tarefaServico.detalhar(id);
+    }
+
     @GetMapping
     public ResponseEntity<List<TarefaDto>> findAll() {
-        List<Tarefa> list = tarefaServico.findAll();
+        List<Tarefa> list = tarefaServico.listar();
         List<TarefaDto> listDto = list.stream().map(obj -> new TarefaDto(obj)).collect(Collectors.toList());
         return ResponseEntity.ok().body(listDto);
     }

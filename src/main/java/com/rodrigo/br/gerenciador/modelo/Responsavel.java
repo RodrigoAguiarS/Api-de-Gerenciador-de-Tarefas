@@ -12,9 +12,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "responsaveis")
 @Getter
 @Setter
+@Table(name = "responsaveis")
 public class Responsavel {
 
     public Responsavel() {
