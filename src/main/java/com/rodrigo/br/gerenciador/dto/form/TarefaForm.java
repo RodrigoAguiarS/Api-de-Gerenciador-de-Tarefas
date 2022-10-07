@@ -7,22 +7,30 @@ import com.rodrigo.br.gerenciador.repository.ResponsavelRepository;
 import com.rodrigo.br.gerenciador.repository.TarefaRepository;
 
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class TarefaForm {
  
-    @NonNull 
+    
     private String titulo;
-    @NonNull 
+    
     private String descricao;
-    @NonNull 
-    private String nomeDoresponsavel;
+   
+    private String nomeDoResponsavel;
+
+    public TarefaForm() {
+    }
+
+    public TarefaForm(String titulo, String descricao, String nomeDoResponsavel) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.nomeDoResponsavel = nomeDoResponsavel;
+    }
 
     public Tarefa converter(ResponsavelRepository repository) {
-        Responsavel responsavel = repository.findByNome(nomeDoresponsavel);
+        Responsavel responsavel = repository.findByNome(nomeDoResponsavel);
         return new Tarefa(titulo, descricao, responsavel);
     }
 

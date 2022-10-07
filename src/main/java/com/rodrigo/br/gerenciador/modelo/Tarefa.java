@@ -20,18 +20,10 @@ import lombok.Setter;
 @Setter
 public class Tarefa {
 
-    public Tarefa() {}
-
-    public Tarefa(String titulo, String descricao, Responsavel responsavel) {
-        this.titulo = titulo;
-        this.descricao = descricao;
-        this.responsavel = responsavel;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
+    
     private String titulo;
 
     private String descricao;
@@ -46,4 +38,12 @@ public class Tarefa {
 
     @Enumerated(EnumType.STRING)
     private Situacao situacao = Situacao.Criada;
+
+    public Tarefa() {}
+
+    public Tarefa(String titulo, String descricao, Responsavel responsavel) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.responsavel = responsavel;
+    }
 }

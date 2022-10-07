@@ -8,7 +8,6 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,7 +22,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.rodrigo.br.gerenciador.dto.TarefaDto;
 import com.rodrigo.br.gerenciador.dto.form.TarefaForm;
 import com.rodrigo.br.gerenciador.modelo.Tarefa;
-import com.rodrigo.br.gerenciador.repository.ResponsavelRepository;
 import com.rodrigo.br.gerenciador.repository.TarefaRepository;
 
 
@@ -36,25 +34,23 @@ public class TarefaControle {
     @Autowired
     private TarefaRepository tarefaRepository;
 
-    @Autowired
-    private ResponsavelRepository responsavelRepository;
-
+    //Método de Listar todas as tarefas
     @GetMapping
     public List<TarefaDto> lista() {
         List<Tarefa> tarefas = tarefaRepository.findAll();
         return TarefaDto.converter(tarefas);
     }
 
+    //Método de cadastrar tarefa
     @PostMapping
     @Transactional
-    public ResponseEntity<TarefaDto> cadastar(@Validated @RequestBody TarefaForm form, UriComponentsBuilder uriBuilder) {
-        Tarefa tarefa = form.converter(responsavelRepository);
+    public ResponseEntity<Tarefa> cadastrar(@RequestBody Tarefa tarefa, UriComponentsBuilder uriBuilder) {
         tarefaRepository.save(tarefa);
-
         URI uri = uriBuilder.path("/tarefas/{id}").buildAndExpand(tarefa.getId()).toUri();
-        return ResponseEntity.created(uri).body(new TarefaDto(tarefa));
+        return ResponseEntity.created(uri).body((tarefa));
     }
 
+    //Método para detalhar atividades por ID
     @GetMapping("/{id}")
     public ResponseEntity<TarefaDto> detalhar(@PathVariable Integer id) {
         Optional<Tarefa> tarefa = tarefaRepository.findById(id);
@@ -64,6 +60,7 @@ public class TarefaControle {
         return ResponseEntity.notFound().build();
     }
 
+    //Método para atualizar tarefas
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity<TarefaDto> atualizar(@PathVariable Integer id, @RequestBody TarefaForm form) {
@@ -75,6 +72,7 @@ public class TarefaControle {
         return ResponseEntity.notFound().build();
     }
 
+    //Método para Remover/deletar tarefas
     @DeleteMapping("/{id}")
     @Transactional
     public ResponseEntity<TarefaDto> remover(@PathVariable Integer id) {
