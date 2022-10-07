@@ -17,14 +17,17 @@ import lombok.Setter;
 @Table(name = "responsaveis")
 public class Responsavel {
 
-    public Responsavel() {
-
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    
+
     private String nome;
 
+    public Responsavel() {}
+
+    public Responsavel(int id, String nome) {
+        super();
+        this.id = id;
+        this.nome = nome;
+    }
 }

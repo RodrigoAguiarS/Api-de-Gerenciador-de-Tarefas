@@ -22,6 +22,12 @@ public class Tarefa {
 
     public Tarefa() {}
 
+    public Tarefa(String titulo, String descricao, Responsavel responsavel) {
+        this.titulo = titulo;
+        this.descricao = descricao;
+        this.responsavel = responsavel;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -36,8 +42,8 @@ public class Tarefa {
     private LocalDateTime data = LocalDateTime.now();
 
     @Enumerated(EnumType.STRING)
-    private Prioridade prioridade;
+    private Prioridade prioridade = Prioridade.Média;
 
     @Enumerated(EnumType.STRING)
-    private Situacao situacao;
+    private Situacao situacao = Situacao.Criada;
 }
