@@ -2,11 +2,12 @@ package com.rodrigo.br.gerenciador.dto;
 
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
+
+import org.springframework.data.domain.Page;
 
 import com.rodrigo.br.gerenciador.modelo.Responsavel;
 import com.rodrigo.br.gerenciador.modelo.Tarefa;
+import com.rodrigo.br.gerenciador.repository.TarefaRepository;
 
 import lombok.Getter;
 
@@ -40,7 +41,15 @@ public class TarefaDto {
         this.situacao = tarefa.getSituacao().name();
     }
 
-    public static List<TarefaDto> converter(List<Tarefa> tarefas){
-        return tarefas.stream().map(TarefaDto::new).collect(Collectors.toList());
+    public static Page<TarefaDto> converter(Page<Tarefa> tarefas){
+        return tarefas.map(TarefaDto::new);
     }
+
+    public Tarefa atualizar(Integer id, TarefaRepository tarefaRepository) {
+        Tarefa tarefa = tarefaRepository.getOne(id);
+        tarefa.setTitulo(this.titulo);
+        tarefa.setDescricao(this.descricao);
+        tarefa.setResponsavel(this.responsavel);
+        return tarefa;
+    } 
 }
