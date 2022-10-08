@@ -5,9 +5,12 @@ import java.net.URI;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,7 +21,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -38,8 +40,8 @@ public class TarefaControle {
 
     //Método de Listar todas as tarefas
     @GetMapping
-    public Page<TarefaDto> lista(@RequestParam int pagina, @RequestParam int qtd) {
-        Pageable paginacao = PageRequest.of(pagina, qtd);
+    @Cacheable(value = "listaDeTarefas")
+    public Page<TarefaDto> lista(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
         Page<Tarefa> tarefas = tarefaRepository.findAll(paginacao);
 
         return TarefaDto.converter(tarefas);
@@ -48,6 +50,7 @@ public class TarefaControle {
     //Método de cadastrar tarefa
     @PostMapping
     @Transactional
+    @CacheEvict(value = "listaDeTarefas", allEntries = true)
     public ResponseEntity<Tarefa> cadastrar(@RequestBody Tarefa tarefa , UriComponentsBuilder uriBuilder) {
         tarefaRepository.save(tarefa);
         URI uri = uriBuilder.path("/tarefas/{id}").buildAndExpand(tarefa.getId()).toUri();
@@ -67,6 +70,7 @@ public class TarefaControle {
     //Método para atualizar tarefas
     @PutMapping("/{id}")
     @Transactional
+    @CacheEvict(value = "listaDeTarefas", allEntries = true)
     public ResponseEntity<TarefaDto> atualizar(@PathVariable Integer id, @RequestBody TarefaDto form) {
         Optional<Tarefa> optional = tarefaRepository.findById(id);
         if (optional.isPresent()) {
@@ -79,6 +83,7 @@ public class TarefaControle {
     //Método para Remover/deletar tarefas
     @DeleteMapping("/{id}")
     @Transactional
+    @CacheEvict(value = "listaDeTarefas", allEntries = true)
     public ResponseEntity<TarefaDto> remover(@PathVariable Integer id) {
         Optional<Tarefa> optional = tarefaRepository.findById(id);
         if (optional.isPresent()) {
