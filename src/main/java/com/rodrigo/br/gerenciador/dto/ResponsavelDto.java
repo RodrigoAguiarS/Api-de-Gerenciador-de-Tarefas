@@ -15,7 +15,7 @@ public class ResponsavelDto {
         this.id = responsavel.getId();
         this.nome = responsavel.getNome();
     }
-    private int id;
+    private Long id;
 
     private String nome;
 

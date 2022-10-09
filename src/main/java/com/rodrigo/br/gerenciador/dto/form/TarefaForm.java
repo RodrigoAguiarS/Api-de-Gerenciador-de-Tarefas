@@ -34,7 +34,7 @@ public class TarefaForm {
         return new Tarefa(titulo, descricao, responsavel);
     }
 
-    public Tarefa atualizar(Integer id, TarefaRepository tarefaRepository) {
+    public Tarefa atualizar(Long id, TarefaRepository tarefaRepository) {
         Tarefa tarefa = tarefaRepository.getOne(id);
         tarefa.setTitulo(this.titulo);
         tarefa.setDescricao(this.descricao);

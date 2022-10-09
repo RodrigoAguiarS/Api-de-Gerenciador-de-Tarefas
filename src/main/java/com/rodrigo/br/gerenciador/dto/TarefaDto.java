@@ -17,7 +17,7 @@ public class TarefaDto {
     public TarefaDto() {
         super();
     }
-    private int id;
+    private Long id;
 
     private String titulo;
 
@@ -45,7 +45,7 @@ public class TarefaDto {
         return tarefas.map(TarefaDto::new);
     }
 
-    public Tarefa atualizar(Integer id, TarefaRepository tarefaRepository) {
+    public Tarefa atualizar(Long id, TarefaRepository tarefaRepository) {
         Tarefa tarefa = tarefaRepository.getOne(id);
         tarefa.setTitulo(this.titulo);
         tarefa.setDescricao(this.descricao);

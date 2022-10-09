@@ -59,7 +59,7 @@ public class TarefaControle {
 
     //Método para detalhar atividades por ID
     @GetMapping("/{id}")
-    public ResponseEntity<TarefaDto> detalhar(@PathVariable Integer id) {
+    public ResponseEntity<TarefaDto> detalhar(@PathVariable Long id) {
         Optional<Tarefa> tarefa = tarefaRepository.findById(id);
         if (tarefa.isPresent()) {
             return ResponseEntity.ok(new TarefaDto(tarefa.get()));
@@ -71,7 +71,7 @@ public class TarefaControle {
     @PutMapping("/{id}")
     @Transactional
     @CacheEvict(value = "listaDeTarefas", allEntries = true)
-    public ResponseEntity<TarefaDto> atualizar(@PathVariable Integer id, @RequestBody TarefaDto form) {
+    public ResponseEntity<TarefaDto> atualizar(@PathVariable Long id, @RequestBody TarefaDto form) {
         Optional<Tarefa> optional = tarefaRepository.findById(id);
         if (optional.isPresent()) {
             Tarefa tarefa = form.atualizar(id, tarefaRepository);
@@ -84,7 +84,7 @@ public class TarefaControle {
     @DeleteMapping("/{id}")
     @Transactional
     @CacheEvict(value = "listaDeTarefas", allEntries = true)
-    public ResponseEntity<TarefaDto> remover(@PathVariable Integer id) {
+    public ResponseEntity<TarefaDto> remover(@PathVariable Long id) {
         Optional<Tarefa> optional = tarefaRepository.findById(id);
         if (optional.isPresent()) {
             tarefaRepository.deleteById(id);

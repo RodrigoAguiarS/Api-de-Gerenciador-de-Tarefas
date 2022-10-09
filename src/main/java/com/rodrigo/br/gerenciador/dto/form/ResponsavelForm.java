@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class ResponsavelForm {
 
-    private int id;
+    private Long id;
     private String nome;
 
     public ResponsavelForm(){}
