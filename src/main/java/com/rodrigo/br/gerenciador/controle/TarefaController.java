@@ -35,7 +35,7 @@ import com.rodrigo.br.gerenciador.repository.TarefaRepository;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/tarefas")
-public class TarefaControle {
+public class TarefaController {
 
     @Autowired
     private TarefaRepository tarefaRepository;

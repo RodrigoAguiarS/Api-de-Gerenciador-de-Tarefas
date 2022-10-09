@@ -42,8 +42,8 @@ public class SecurityConfigurations {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-        .antMatchers(HttpMethod.GET, "/topicos").permitAll()
-        .antMatchers(HttpMethod.GET, "/topicos/*").permitAll()
+        .antMatchers(HttpMethod.GET, "/tarefas").permitAll()
+        .antMatchers(HttpMethod.GET, "/tarefas/*").permitAll()
         .antMatchers(HttpMethod.POST, "/auth").permitAll()
         .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
         .anyRequest().authenticated()

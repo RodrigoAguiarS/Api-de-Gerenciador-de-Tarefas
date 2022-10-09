@@ -6,10 +6,10 @@ import java.net.URI;
 import java.util.List;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,7 +27,7 @@ import com.rodrigo.br.gerenciador.repository.ResponsavelRepository;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/responsavel")
-public class ResponsavelControle {
+public class ResponsavelController {
 
     @Autowired
     private ResponsavelRepository responsavelRepository;
@@ -40,7 +40,7 @@ public class ResponsavelControle {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<ResponsavelDto> cadastar(@Validated @RequestBody ResponsavelForm form, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<ResponsavelDto> cadastar(@RequestBody @Valid ResponsavelForm form, UriComponentsBuilder uriBuilder) {
         Responsavel responsavel = form.converter(form);
         responsavelRepository.save(responsavel);
 

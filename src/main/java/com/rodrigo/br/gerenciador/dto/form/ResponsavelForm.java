@@ -2,6 +2,9 @@ package com.rodrigo.br.gerenciador.dto.form;
 
 
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import com.rodrigo.br.gerenciador.modelo.Responsavel;
 
 import lombok.Getter;
@@ -12,6 +15,8 @@ import lombok.Setter;
 public class ResponsavelForm {
 
     private Long id;
+    
+    @NotNull @NotEmpty
     private String nome;
 
     public ResponsavelForm(){}
