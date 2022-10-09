@@ -4,6 +4,8 @@ package com.rodrigo.br.gerenciador.controle;
 import java.net.URI;
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -51,7 +53,7 @@ public class TarefaControle {
     @PostMapping
     @Transactional
     @CacheEvict(value = "listaDeTarefas", allEntries = true)
-    public ResponseEntity<Tarefa> cadastrar(@RequestBody Tarefa tarefa , UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<Tarefa> cadastrar(@RequestBody @Valid Tarefa tarefa , UriComponentsBuilder uriBuilder) {
         tarefaRepository.save(tarefa);
         URI uri = uriBuilder.path("/tarefas/{id}").buildAndExpand(tarefa.getId()).toUri();
         return ResponseEntity.created(uri).body((tarefa));
@@ -71,7 +73,7 @@ public class TarefaControle {
     @PutMapping("/{id}")
     @Transactional
     @CacheEvict(value = "listaDeTarefas", allEntries = true)
-    public ResponseEntity<TarefaDto> atualizar(@PathVariable Long id, @RequestBody TarefaDto form) {
+    public ResponseEntity<TarefaDto> atualizar(@PathVariable Long id, @RequestBody @Valid TarefaDto form) {
         Optional<Tarefa> optional = tarefaRepository.findById(id);
         if (optional.isPresent()) {
             Tarefa tarefa = form.atualizar(id, tarefaRepository);

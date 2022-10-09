@@ -3,6 +3,9 @@ package com.rodrigo.br.gerenciador.dto;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.data.domain.Page;
 
 import com.rodrigo.br.gerenciador.modelo.Responsavel;
@@ -19,10 +22,13 @@ public class TarefaDto {
     }
     private Long id;
 
+    @NotNull @NotEmpty
     private String titulo;
 
+    @NotNull @NotEmpty
     private String descricao;
 
+    @NotNull 
     private Responsavel responsavel;
 
     private LocalDateTime data = LocalDateTime.now();
