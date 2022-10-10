@@ -45,7 +45,7 @@ public class SecurityConfigurations {
         .antMatchers(HttpMethod.GET, "/tarefas").permitAll()
         .antMatchers(HttpMethod.GET, "/tarefas/*").permitAll()
         .antMatchers(HttpMethod.POST, "/auth").permitAll()
-        .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
+        .antMatchers(HttpMethod.GET, "/actuator/**").authenticated()
         .anyRequest().authenticated()
         .and().csrf().disable()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
