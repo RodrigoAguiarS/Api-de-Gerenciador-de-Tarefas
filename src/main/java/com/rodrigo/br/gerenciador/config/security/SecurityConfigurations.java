@@ -42,11 +42,11 @@ public class SecurityConfigurations {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-        .antMatchers(HttpMethod.GET, "/tarefas").permitAll()
-        .antMatchers(HttpMethod.GET, "/tarefas/*").permitAll()
-        .antMatchers(HttpMethod.POST, "/auth").permitAll()
-        .antMatchers(HttpMethod.GET, "/actuator/**").authenticated()
-        .antMatchers(HttpMethod.DELETE, "/tarefas/*").hasRole("MODERADOR")
+        .antMatchers(HttpMethod.GET, "/api/tarefas").permitAll()
+        .antMatchers(HttpMethod.GET, "/api/tarefas/*").permitAll()
+        .antMatchers(HttpMethod.POST, "/api/auth").permitAll()
+        .antMatchers(HttpMethod.GET, "/api/actuator/**").authenticated()
+        .antMatchers(HttpMethod.DELETE, "/api/tarefas/*").hasRole("MODERADOR")
         .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
         .anyRequest().authenticated()
         .and().csrf().disable()
@@ -61,4 +61,7 @@ public class SecurityConfigurations {
         return (web) -> web.ignoring().antMatchers("/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**", "/swagger-resources/**");
     }
 
+    public static void main(String[] args) {
+        System.out.println(new BCryptPasswordEncoder().encode("123")); 
+    }
 }

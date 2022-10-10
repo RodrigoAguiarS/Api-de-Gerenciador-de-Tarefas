@@ -26,7 +26,7 @@ import com.rodrigo.br.gerenciador.repository.ResponsavelRepository;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/responsavel")
+@RequestMapping("api/responsavel")
 public class ResponsavelController {
 
     @Autowired

@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.rodrigo.br.gerenciador.dto.DetalhesTarefaDto;
 import com.rodrigo.br.gerenciador.dto.TarefaDto;
 import com.rodrigo.br.gerenciador.modelo.Tarefa;
 import com.rodrigo.br.gerenciador.repository.TarefaRepository;
@@ -35,7 +36,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/tarefas")
+@RequestMapping("api/tarefas")
 public class TarefaController {
 
     @Autowired
@@ -44,10 +45,20 @@ public class TarefaController {
     //Método de Listar todas as tarefas
     @GetMapping
     @Cacheable(value = "listaDeTarefas")
-    public Page<TarefaDto> lista(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
+    public Page<DetalhesTarefaDto> lista(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
         Page<Tarefa> tarefas = tarefaRepository.findAll(paginacao);
 
-        return TarefaDto.converter(tarefas);
+        return DetalhesTarefaDto.converter(tarefas);
+    }
+
+    //Método para detalhar atividades por ID
+    @GetMapping("/{id}")
+    public ResponseEntity<DetalhesTarefaDto> detalhar(@PathVariable Long id) {
+        Optional<Tarefa> tarefa = tarefaRepository.findById(id);
+        if (tarefa.isPresent()) {
+            return ResponseEntity.ok(new DetalhesTarefaDto(tarefa.get()));
+        }
+        return ResponseEntity.notFound().build();
     }
 
     //Método de cadastrar tarefa
@@ -58,16 +69,6 @@ public class TarefaController {
         tarefaRepository.save(tarefa);
         URI uri = uriBuilder.path("/tarefas/{id}").buildAndExpand(tarefa.getId()).toUri();
         return ResponseEntity.created(uri).body((tarefa));
-    }
-
-    //Método para detalhar atividades por ID
-    @GetMapping("/{id}")
-    public ResponseEntity<TarefaDto> detalhar(@PathVariable Long id) {
-        Optional<Tarefa> tarefa = tarefaRepository.findById(id);
-        if (tarefa.isPresent()) {
-            return ResponseEntity.ok(new TarefaDto(tarefa.get()));
-        }
-        return ResponseEntity.notFound().build();
     }
 
     //Método para atualizar tarefas
