@@ -4,7 +4,6 @@ package com.rodrigo.br.gerenciador.dto.form;
 import com.rodrigo.br.gerenciador.modelo.Responsavel;
 import com.rodrigo.br.gerenciador.modelo.Tarefa;
 import com.rodrigo.br.gerenciador.repository.ResponsavelRepository;
-import com.rodrigo.br.gerenciador.repository.TarefaRepository;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +12,6 @@ import lombok.Setter;
 @Setter
 public class TarefaForm {
  
-    
     private String titulo;
     
     private String descricao;
@@ -33,12 +31,4 @@ public class TarefaForm {
         Responsavel responsavel = repository.findByNome(nomeDoResponsavel);
         return new Tarefa(titulo, descricao, responsavel);
     }
-
-    public Tarefa atualizar(Long id, TarefaRepository tarefaRepository) {
-        Tarefa tarefa = tarefaRepository.getOne(id);
-        tarefa.setTitulo(this.titulo);
-        tarefa.setDescricao(this.descricao);
-        tarefa.setResponsavel(tarefa.getResponsavel());
-        return tarefa;
-    } 
 }

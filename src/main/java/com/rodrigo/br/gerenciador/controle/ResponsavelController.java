@@ -4,6 +4,7 @@ package com.rodrigo.br.gerenciador.controle;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -46,5 +48,14 @@ public class ResponsavelController {
 
         URI uri = uriBuilder.path("/tarefas/{id}").buildAndExpand(responsavel.getId()).toUri();
         return ResponseEntity.created(uri).body(new ResponsavelDto(responsavel));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponsavelForm> detalhar(@PathVariable Long id) {
+        Optional<Responsavel> responsaveis = responsavelRepository.findById(id);
+        if (responsaveis.isPresent()) {
+            return ResponseEntity.ok(new ResponsavelForm(responsaveis.get()));
+        }
+        return ResponseEntity.notFound().build();
     }
 }

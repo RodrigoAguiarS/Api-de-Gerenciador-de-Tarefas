@@ -20,8 +20,7 @@ import com.rodrigo.br.gerenciador.repository.UsuarioRepository;
 @Configuration
 public class SecurityConfigurations {
 
-    @Autowired
-    private AutenticacaoService autenticacaoService;
+ 
 
     @Autowired
     private TokenService tokenService;

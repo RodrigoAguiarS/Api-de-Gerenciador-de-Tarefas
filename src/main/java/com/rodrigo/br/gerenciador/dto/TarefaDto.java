@@ -1,5 +1,7 @@
 package com.rodrigo.br.gerenciador.dto;
 
+import java.util.Optional;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -23,7 +25,7 @@ public class TarefaDto {
     @NotNull @NotEmpty
     private String descricao;
 
-    @NotNull 
+    @NotNull
     private Responsavel responsavel;
 
 
@@ -35,10 +37,15 @@ public class TarefaDto {
     }
 
     public Tarefa atualizar(Long id, TarefaRepository tarefaRepository) {
-        Tarefa tarefa = tarefaRepository.getOne(id);
-        tarefa.setTitulo(this.titulo);
-        tarefa.setDescricao(this.descricao);
-        tarefa.setResponsavel(this.responsavel);
-        return tarefa;
+        Optional<Tarefa> tarefas = tarefaRepository.findById(id);
+        if (tarefas.isPresent()){
+            Tarefa tarefa = new Tarefa();
+            tarefa.setId(id);
+            tarefa.setTitulo(this.titulo);
+            tarefa.setDescricao(this.descricao);
+            tarefa.setResponsavel(this.responsavel);
+            return tarefa;
+        }
+        return null;
     } 
 }
