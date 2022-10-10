@@ -29,6 +29,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.rodrigo.br.gerenciador.dto.TarefaDto;
 import com.rodrigo.br.gerenciador.modelo.Tarefa;
 import com.rodrigo.br.gerenciador.repository.TarefaRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 
 
@@ -85,6 +86,7 @@ public class TarefaController {
     //Método para Remover/deletar tarefas
     @DeleteMapping("/{id}")
     @Transactional
+    @SecurityRequirement(name = "bearer-key")
     @CacheEvict(value = "listaDeTarefas", allEntries = true)
     public ResponseEntity<TarefaDto> remover(@PathVariable Long id) {
         Optional<Tarefa> optional = tarefaRepository.findById(id);
