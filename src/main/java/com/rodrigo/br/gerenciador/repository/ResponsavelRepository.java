@@ -8,7 +8,7 @@ import com.rodrigo.br.gerenciador.modelo.Responsavel;
 @Repository
 public interface ResponsavelRepository extends JpaRepository<Responsavel, Long> {
 
-    Responsavel findByNome(String nomeDoresponsavel);
+    Responsavel findByNome(String nomeDoResponsavel);
 
     
 }

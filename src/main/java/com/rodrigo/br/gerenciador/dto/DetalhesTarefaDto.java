@@ -2,8 +2,6 @@ package com.rodrigo.br.gerenciador.dto;
 
 import java.time.LocalDateTime;
 
-import org.springframework.data.domain.Page;
-
 import com.rodrigo.br.gerenciador.modelo.Prioridade;
 import com.rodrigo.br.gerenciador.modelo.Responsavel;
 import com.rodrigo.br.gerenciador.modelo.Situacao;
@@ -17,13 +15,6 @@ import lombok.Setter;
 public class DetalhesTarefaDto {
 
     public DetalhesTarefaDto(){
-    }
-
-    public DetalhesTarefaDto(Tarefa tarefa) {
-        this.id = tarefa.getId();
-        this.titulo = tarefa.getTitulo();
-        this.descricao = tarefa.getDescricao();
-        this.responsavel = tarefa.getResponsavel();
     }
 
     private Long id;
@@ -40,7 +31,13 @@ public class DetalhesTarefaDto {
 
     private Situacao situacao = Situacao.Criada;
 
-    public static Page<DetalhesTarefaDto> converter(Page<Tarefa> tarefas){
-        return tarefas.map(DetalhesTarefaDto::new);
+    public DetalhesTarefaDto(Tarefa tarefa) {
+        this.id = tarefa.getId();
+        this.titulo = tarefa.getTitulo();
+        this.descricao = tarefa.getDescricao();
+        this.responsavel = tarefa.getResponsavel();
+        this.data = tarefa.getData();
+        this.prioridade = tarefa.getPrioridade();
+        this.situacao = tarefa.getSituacao();
     }
 }

@@ -42,7 +42,7 @@ public class ResponsavelController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<ResponsavelDto> cadastar(@RequestBody @Valid ResponsavelForm form, UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<ResponsavelDto> cadastrar(@RequestBody @Valid ResponsavelForm form, UriComponentsBuilder uriBuilder) {
         Responsavel responsavel = form.converter(form);
         responsavelRepository.save(responsavel);
 

@@ -23,12 +23,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.rodrigo.br.gerenciador.dto.DetalhesTarefaDto;
 import com.rodrigo.br.gerenciador.dto.TarefaDto;
+import com.rodrigo.br.gerenciador.dto.form.AtualizacaoTarefaForm;
+import com.rodrigo.br.gerenciador.dto.form.TarefaForm;
 import com.rodrigo.br.gerenciador.modelo.Tarefa;
+import com.rodrigo.br.gerenciador.repository.ResponsavelRepository;
 import com.rodrigo.br.gerenciador.repository.TarefaRepository;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
@@ -42,13 +46,22 @@ public class TarefaController {
     @Autowired
     private TarefaRepository tarefaRepository;
 
+    @Autowired 
+    private ResponsavelRepository responsavelRepository;
+
     //Método de Listar todas as tarefas
     @GetMapping
     @Cacheable(value = "listaDeTarefas")
-    public Page<DetalhesTarefaDto> lista(@PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
-        Page<Tarefa> tarefas = tarefaRepository.findAll(paginacao);
+    public Page<TarefaDto> lista(@RequestParam(required = false) String nomeDoResponsavel,
+    @PageableDefault(sort = "id", direction = Direction.ASC, page = 0, size = 10) Pageable paginacao) {
 
-        return DetalhesTarefaDto.converter(tarefas);
+        if (nomeDoResponsavel == null){
+            Page<Tarefa> tarefas = tarefaRepository.findAll(paginacao);
+            return TarefaDto.converter(tarefas);
+        } else {
+            Page<Tarefa> tarefas = tarefaRepository.findByResponsavelNome(nomeDoResponsavel, paginacao);
+            return TarefaDto.converter(tarefas);
+        }
     }
 
     //Método para detalhar atividades por ID
@@ -65,17 +78,19 @@ public class TarefaController {
     @PostMapping
     @Transactional
     @CacheEvict(value = "listaDeTarefas", allEntries = true)
-    public ResponseEntity<Tarefa> cadastrar(@RequestBody @Valid Tarefa tarefa , UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<TarefaDto> cadastrar(@RequestBody @Valid TarefaForm form , UriComponentsBuilder uriBuilder) {
+        Tarefa tarefa = form.converter(responsavelRepository);
         tarefaRepository.save(tarefa);
+
         URI uri = uriBuilder.path("/tarefas/{id}").buildAndExpand(tarefa.getId()).toUri();
-        return ResponseEntity.created(uri).body((tarefa));
+        return ResponseEntity.created(uri).body(new TarefaDto(tarefa));
     }
 
     //Método para atualizar tarefas
     @PutMapping("/{id}")
     @Transactional
     @CacheEvict(value = "listaDeTarefas", allEntries = true)
-    public ResponseEntity<TarefaDto> atualizar(@PathVariable Long id, @RequestBody @Valid TarefaDto form) {
+    public ResponseEntity<TarefaDto> atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoTarefaForm form) {
         Optional<Tarefa> optional = tarefaRepository.findById(id);
         if (optional.isPresent()) {
             Tarefa tarefa = form.atualizar(id, tarefaRepository);
