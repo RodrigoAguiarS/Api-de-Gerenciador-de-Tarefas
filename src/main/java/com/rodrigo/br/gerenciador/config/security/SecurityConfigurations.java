@@ -43,7 +43,8 @@ public class SecurityConfigurations {
         http.authorizeRequests()
         .antMatchers(HttpMethod.GET, "/api/tarefas").permitAll()
         .antMatchers(HttpMethod.GET, "/api/tarefas/*").permitAll()
-        .antMatchers(HttpMethod.POST, "/api/auth").permitAll()
+        .antMatchers(HttpMethod.POST, "/api/usuario/auth").permitAll()
+        .antMatchers(HttpMethod.POST, "/api/usuario/criar").permitAll()
         .antMatchers(HttpMethod.GET, "/api/actuator/**").authenticated()
         .antMatchers(HttpMethod.DELETE, "/api/tarefas/*").hasRole("MODERADOR")
         .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
@@ -61,6 +62,6 @@ public class SecurityConfigurations {
     }
 
     public static void main(String[] args) {
-        System.out.println(new BCryptPasswordEncoder().encode("123")); 
+        System.out.println(new BCryptPasswordEncoder().encode("1234")); 
     }
 }

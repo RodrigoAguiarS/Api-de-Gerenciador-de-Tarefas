@@ -8,6 +8,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +22,23 @@ import java.util.Objects;
 @Table(name = "responsaveis")
 public class Responsavel {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String nome;
+
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    private LocalDateTime dataCadastro = LocalDateTime.now();
+
+    public Responsavel() {}
+
+    public Responsavel(Long id, String nome) {
+        super();
+        this.id = id;
+        this.nome = nome;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
@@ -31,21 +50,5 @@ public class Responsavel {
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getNome());
-    }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String nome;
-
-    private LocalDateTime dataCadastro = LocalDateTime.now();
-
-    public Responsavel() {}
-
-    public Responsavel(Long id, String nome) {
-        super();
-        this.id = id;
-        this.nome = nome;
     }
 }

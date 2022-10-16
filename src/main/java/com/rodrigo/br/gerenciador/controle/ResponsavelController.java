@@ -51,10 +51,10 @@ public class ResponsavelController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ResponsavelForm> detalhar(@PathVariable Long id) {
+    public ResponseEntity<ResponsavelDto> detalhar(@PathVariable Long id) {
         Optional<Responsavel> responsaveis = responsavelRepository.findById(id);
         if (responsaveis.isPresent()) {
-            return ResponseEntity.ok(new ResponsavelForm(responsaveis.get()));
+            return ResponseEntity.ok(new ResponsavelDto(responsaveis.get()));
         }
         return ResponseEntity.notFound().build();
     }
